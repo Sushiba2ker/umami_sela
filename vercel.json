@@ -1,4 +1,6 @@
 {
+  "buildCommand": "pnpm install && pnpm run build-db && pnpm run build-tracker && pnpm run build-app",
+  "installCommand": "pnpm install",
   "functions": {
     "src/pages/api/websites/[websiteId]/learning/*.ts": {
       "maxDuration": 30
