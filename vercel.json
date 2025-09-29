@@ -7,17 +7,6 @@
       "maxDuration": 10
     }
   },
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "DIRECT_DATABASE_URL": "@direct_database_url",
-    "APP_SECRET": "@app_secret"
-  },
-  "build": {
-    "env": {
-      "DATABASE_URL": "@database_url",
-      "DIRECT_DATABASE_URL": "@direct_database_url"
-    }
-  },
   "headers": [
     {
       "source": "/api/track",
