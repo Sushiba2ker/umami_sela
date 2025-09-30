@@ -33,6 +33,41 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
   const { countryNames } = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
 
+  const logs = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
+    let logs = data.events;
+
+    if (search) {
+      logs = logs.filter(({ eventName, urlPath, browser, os, country, device }) => {
+        return [
+          eventName,
+          urlPath,
+          os,
+          formatValue(browser, 'browser'),
+          formatValue(country, 'country'),
+          formatValue(device, 'device'),
+        ]
+          .filter(n => n)
+          .map(n => n.toLowerCase())
+          .join('')
+          .includes(search.toLowerCase());
+      });
+    }
+
+    if (filter !== TYPE_ALL) {
+      logs = logs.filter(({ __type }) => __type === filter);
+    }
+
+    return logs;
+  }, [data, filter, search, formatValue]);
+
+  if (!website) {
+    return null;
+  }
+
   const buttons = [
     {
       label: formatMessage(labels.all),
@@ -124,37 +159,6 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
       </div>
     );
   };
-
-  const logs = useMemo(() => {
-    if (!data) {
-      return [];
-    }
-
-    let logs = data.events;
-
-    if (search) {
-      logs = logs.filter(({ eventName, urlPath, browser, os, country, device }) => {
-        return [
-          eventName,
-          urlPath,
-          os,
-          formatValue(browser, 'browser'),
-          formatValue(country, 'country'),
-          formatValue(device, 'device'),
-        ]
-          .filter(n => n)
-          .map(n => n.toLowerCase())
-          .join('')
-          .includes(search.toLowerCase());
-      });
-    }
-
-    if (filter !== TYPE_ALL) {
-      return logs.filter(({ __type }) => __type === filter);
-    }
-
-    return logs;
-  }, [data, filter, formatValue, search]);
 
   return (
     <div className={styles.table}>

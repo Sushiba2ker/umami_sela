@@ -23,6 +23,10 @@ export function WebsiteSettings({
   const [tab, setTab] = useState<Key>('details');
   const { showToast } = useToasts();
 
+  if (!website) {
+    return null;
+  }
+
   const handleSave = () => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
   };

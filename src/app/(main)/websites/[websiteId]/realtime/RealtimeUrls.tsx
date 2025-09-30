@@ -13,6 +13,10 @@ export function RealtimeUrls({ data }: { data: RealtimeData }) {
   const { formatMessage, labels } = useMessages();
   const { referrers, urls } = data || {};
   const [filter, setFilter] = useState<Key>(FILTER_REFERRERS);
+
+  if (!website) {
+    return null;
+  }
   const limit = 15;
 
   const buttons = [

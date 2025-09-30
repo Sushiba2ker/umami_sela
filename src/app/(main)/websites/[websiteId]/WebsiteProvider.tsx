@@ -13,7 +13,7 @@ export function WebsiteProvider({
   children: ReactNode;
 }) {
   const { modified } = useModified(`website:${websiteId}`);
-  const { data: website, isFetching, isLoading, refetch } = useWebsite(websiteId);
+  const { data: website, isFetching, isLoading, error, refetch } = useWebsite(websiteId);
 
   useEffect(() => {
     if (modified) {
@@ -23,6 +23,23 @@ export function WebsiteProvider({
 
   if (isFetching && isLoading) {
     return <Loading position="page" />;
+  }
+
+  if (error) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <p>Error loading website data. Please try refreshing the page.</p>
+        <button onClick={() => refetch()}>Retry</button>
+      </div>
+    );
+  }
+
+  if (!website) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <p>Website not found.</p>
+      </div>
+    );
   }
 
   return <WebsiteContext.Provider value={website}>{children}</WebsiteContext.Provider>;

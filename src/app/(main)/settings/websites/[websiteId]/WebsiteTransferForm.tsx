@@ -34,6 +34,10 @@ export function WebsiteTransferForm({
   const { result, query } = useTeams(user.id);
   const isTeamWebsite = !!website?.teamId;
 
+  if (!website) {
+    return null;
+  }
+
   const handleSubmit = async () => {
     mutate(
       {

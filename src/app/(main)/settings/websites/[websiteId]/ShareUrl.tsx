@@ -17,14 +17,19 @@ const generateId = () => getRandomChars(16);
 
 export function ShareUrl({ hostUrl, onSave }: { hostUrl?: string; onSave?: () => void }) {
   const website = useContext(WebsiteContext);
-  const { domain, shareId } = website;
   const { formatMessage, labels, messages } = useMessages();
-  const [id, setId] = useState(shareId);
+  const [id, setId] = useState(website?.shareId);
   const { post, useMutation } = useApi();
   const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) => post(`/websites/${website.id}`, data),
+    mutationFn: (data: any) => post(`/websites/${website?.id}`, data),
   });
   const { touch } = useModified();
+
+  if (!website) {
+    return null;
+  }
+
+  const { domain, shareId } = website;
 
   const url = `${hostUrl || window?.location.origin || ''}${
     process.env.basePath || ''

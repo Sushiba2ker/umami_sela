@@ -14,6 +14,10 @@ export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSa
   const ref = useRef(null);
   const { touch } = useModified();
 
+  if (!website) {
+    return null;
+  }
+
   const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
